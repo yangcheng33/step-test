@@ -11,11 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 3
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
+    env:
+      STEP_PAT: ${{ secrets.STEP_PAT }}
     steps:
-      - uses: actions/checkout@v4
+      - name: skip if no STEP_PAT
+        if: ${{ env.STEP_PAT == '' }}
+        run: echo "STEP_PAT 未配置，跳过随机 cron 与仓库保活"
+      - uses: actions/checkout@v5
+        if: ${{ env.STEP_PAT != '' }}
         with:
           token: ${{ secrets.STEP_PAT }}
       - name: random cron
+        if: ${{ env.STEP_PAT != '' }}
         run: |
           source cron_convert.sh
           echo "configed CRON_HOURS ${{ vars.CRON_HOURS }}"

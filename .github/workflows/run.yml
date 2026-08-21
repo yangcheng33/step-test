@@ -2,7 +2,8 @@ name: 刷步数
 
 on:
   schedule:
-    - cron: '21 1,7,10,12,14,23 * * *'
+    # UTC 13:30 = 北京时间 21:30，每天只执行一次
+    - cron: '30 13 * * *'
   workflow_dispatch:
 
 jobs:
@@ -11,16 +12,16 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout codes
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Update system and install zsh
         run: |
           sudo -E apt-get -qq update
           sudo -E apt-get install zsh -y
           
       - name: Init Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v6
         with:
-          python-version: 3.8
+          python-version: '3.11'
           
       - name: Start
         env:
