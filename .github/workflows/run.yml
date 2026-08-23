@@ -3,7 +3,7 @@ name: 刷步数
 on:
   schedule:
     # UTC 1:30 = 北京时间 9:30，每天只执行一次
-    - cron: '11 1 * * *'
+    - cron: '39 1 * * *'
   workflow_dispatch:
 
 jobs:
